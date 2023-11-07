@@ -69,6 +69,8 @@ pub enum Key {
     ResidentKey(KeyId),
     // THIS USED TO BE 92 NOW IT'S 96 or 97 or so... waddup?
     WrappedKey(Bytes<128>),
+    PQCKey(Bytes<16>),
+
 }
 
 /// The main content of a `Credential`.
