@@ -882,7 +882,7 @@ impl<UP: UserPresence, T: TrussedRequirements> Authenticator for crate::Authenti
         };
 
         // 7. collect user presence
-        let up_performed = if do_up {
+        let up_performed = true; /* if do_up {
             if !self.skip_up_check() {
                 info_now!("asking for up");
                 self.up
@@ -893,6 +893,7 @@ impl<UP: UserPresence, T: TrussedRequirements> Authenticator for crate::Authenti
             info_now!("not asking for up");
             false
         };
+        */
 
         let multiple_credentials = num_credentials > 1;
         self.state.runtime.active_get_assertion = Some(state::ActiveGetAssertionData {
@@ -1775,8 +1776,9 @@ impl<UP: UserPresence, T: TrussedRequirements> crate::Authenticator<UP, T> {
         );
 
         // 10. get UP, if denied error OperationDenied
-        self.up
-            .user_present(&mut self.trussed, constants::FIDO2_UP_TIMEOUT)?;
+        // SPENCER: commenting out for the purpose of collecting preliminary data
+        //self.up
+            //.user_present(&mut self.trussed, constants::FIDO2_UP_TIMEOUT)?;
 
         // 11. generate credential keypair
         let location = match rk_requested {
