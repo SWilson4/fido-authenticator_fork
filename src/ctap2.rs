@@ -35,6 +35,8 @@ use crate::{
     Result, SigningAlgorithm, TrussedRequirements, UserPresence,
 };
 
+use cortex_m::peripheral::DWT;
+
 #[allow(unused_imports)]
 use crate::msp;
 
@@ -274,12 +276,16 @@ impl<UP: UserPresence, T: TrussedRequirements> Authenticator for crate::Authenti
 
         let mut pqc_sig = [0; pqclean::PQCLEAN_DILITHIUM3_CLEAN_CRYPTO_BYTES as usize];
         let mut siglen = pqclean::PQCLEAN_DILITHIUM3_CLEAN_CRYPTO_BYTES as usize;
+        let cyccnt_start = DWT::cycle_count();
+        info_now!("start cycle count {}", cyccnt_start);
         sb_pqclean_dilithium3_clean_crypto_sign_signature(
             &commitment,
             &mut dilithium3_private_key,
             &mut pqc_sig,
             &mut siglen,
         );
+        let cyccnt_end = DWT::cycle_count();
+        info_now!("end cycle count {}", cyccnt_start);
 
         let att_stmt;
         {
